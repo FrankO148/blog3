@@ -85,7 +85,7 @@ class User extends AppModel {
 		)
 	);
 
-	public $actsAs = array('Acl' => array('type' => 'requester'));
+	public $actsAs = array('Acl' => array('type' => 'requester', 'enabled' => false));
 
 	public function parentNode() {
         if (!$this->id && empty($this->data)) {
@@ -107,6 +107,10 @@ class User extends AppModel {
           $this->data['User']['password']
         );
         return true;
+    }
+
+    public function bindNode($user) {
+    	return array('model' => 'Group', 'foreign_key' => $user['User']['group_id']);
     }
 	
 

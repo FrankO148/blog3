@@ -58,5 +58,6 @@ class AppController extends Controller {
           'controller' => 'posts',
           'action' => 'add'
         );
+        
     }
 }

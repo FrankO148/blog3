@@ -48,6 +48,7 @@ class PostsController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Post->create();
+			$this->request->data['Post']['user_id'] = $this->Auth->user('id');
 			if ($this->Post->save($this->request->data)) {
 				$this->Flash->success(__('The post has been saved.'));
 				return $this->redirect(array('action' => 'index'));
@@ -94,8 +95,15 @@ class PostsController extends AppController {
  */
 	public function delete($id = null) {
 		$this->Post->id = $id;
+		$this->Post->findById($id);
 		if (!$this->Post->exists()) {
 			throw new NotFoundException(__('Invalid post'));
+		}
+		$this->log($this->Post->User->id, 'debug user post');
+		$this->log($this->Auth->user('id'), 'debug auth user ');
+
+		if ($this->Post->User->id != $this->Auth->user('id')){
+			throw new ForbiddenException(__('forbidden postssss'));		
 		}
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Post->delete()) {

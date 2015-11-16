@@ -116,13 +116,13 @@ class UsersController extends AppController {
 	}
 
 	public function logout() {
-    //Leave empty for now.
+		return $this->redirect($this->Auth->logout());
 	}
 
 	public function beforeFilter() {
 		parent::beforeFilter();
 
     // For CakePHP 2.1 and up
-		$this->Auth->allow();
+		$this->Auth->allow('login');
 	}
 }
